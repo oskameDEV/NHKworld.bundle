@@ -176,7 +176,7 @@ def load_JSON():
 
 	# LOAD CHANNELS JSON
 	try:
-		dataA = JSON.ObjectFromString(HTTP.Request(CHANNELS, cacheTime = None).content)
+		dataA = JSON.ObjectFromString(HTTP.Request(CHANNELS, cacheTime = 0).content)
 	except Exception:
 		Log("NHK :: Unable to load [LIVE STREAM] JSON.")
 	else:
@@ -184,7 +184,7 @@ def load_JSON():
 
 	# LOAD EPISODES JSON
 	try:
-		dataB = JSON.ObjectFromString(HTTP.Request(PROGRAMS, cacheTime = None).content)
+		dataB = JSON.ObjectFromString(HTTP.Request(PROGRAMS, cacheTime = 0).content)
 	except Exception:
 		Log("NHK :: Unable to load [VIDEOS] JSON file.")
 	else:
@@ -192,7 +192,7 @@ def load_JSON():
 
 	# LOAD RECENT SHOWS JSON
 	try:
-		dataC = JSON.ObjectFromString(HTTP.Request(RECENTLY, cacheTime = None).content)
+		dataC = JSON.ObjectFromString(HTTP.Request(RECENTLY, cacheTime = 0).content)
 	except Exception:
 		Log("NHK :: Unable to load [RECENT] JSON.")
 	else:
