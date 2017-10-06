@@ -40,7 +40,7 @@ def Start():
 @handler(PREFIX, NAME, ICON)
 def MainMenu():
 
-	oc 	= ObjectContainer(view_group="InfoList", no_cache=True)w
+	oc 	= ObjectContainer(view_group="InfoList", no_cache=True)
 
 	# ADD LIVE STREAM OBJECT FIRST
 	item = Dict['channels'][0]
