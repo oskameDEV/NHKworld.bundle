@@ -1,16 +1,16 @@
 # NHKworld.bundle
-Plex Media Server channel for NHK World.
+Plex Media Server channel for NHK World.  
 Watch LIVE through Plex, and all episodes from the Video On Demand section.  
   
 **Installation Instructions**  
 Simply install it from the official Plex Channel Directory.  
 Side menu → [Channels] → [INSTALL CHANNELS] → [Categories] → [News]  
 And find 'NHKworld' there, tap the channel icon and choose [INSTALL]  
-/!\ Installing it this way ensures you get updates installed automatically. /!\
+Installing it this way ensures you get updates installed automatically.  
 
 **Manual Installation Instructions**  
 If for whatever reason you want to install this channel manually  
-(just remember you won't be getting auto-updates this way.)
+ /!\ Installing it manually will not come with auto-updates. /!\  
 
 Download the latest version and after unzipping, make sure the folder name is called "NHKworld.bundle"  
 Copy or move NHKworld.bundle to your plugin directory.
