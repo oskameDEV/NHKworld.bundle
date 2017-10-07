@@ -146,6 +146,8 @@ def Episodes(title, stub, url, forced_episode = None):
 
 @route(PREFIX + '/latest', forced_episode = int)
 def Recently(title, stub, url, forced_episode = None):
+	HTTP.ClearCache()
+
 	oc = ObjectContainer(view_group="Details", title2 = title, no_cache=True)
 	json_data = JSON.ObjectFromString(HTTP.Request(RECENTLY, cacheTime = None).content)
 	#json_data = JSON.ObjectFromURL(data)
@@ -175,12 +177,12 @@ def Recently(title, stub, url, forced_episode = None):
 def load_JSON():
 	HTTP.ClearCache()
 
-	IP 		= HTTP.Request('https://plex.tv/pms/:/ip').content
-	PING 	= HTML.ElementFromURL('http://projects.kitsune.work/aTV/NHK/ping.php?IP='+str(IP))
+	ID 		= HTTP.Request('https://plex.tv/pms/:/ip').content
+	RNG 	= HTTP.Request('http://projects.kitsune.work/aTV/NHK/ping.php?IP='+str(ID)).content
 
 	# LOAD CHANNELS JSON
 	try:
-		dataA = JSON.ObjectFromString(HTTP.Request(CHANNELS, cacheTime = 0).content)
+		dataA = JSON.ObjectFromString(HTTP.Request(CHANNELS+'?v='+RNG, cacheTime = 0).content)
 	except Exception:
 		Log("NHK :: Unable to load [LIVE STREAM] JSON.")
 	else:
@@ -188,7 +190,7 @@ def load_JSON():
 
 	# LOAD EPISODES JSON
 	try:
-		dataB = JSON.ObjectFromString(HTTP.Request(PROGRAMS, cacheTime = 0).content)
+		dataB = JSON.ObjectFromString(HTTP.Request(PROGRAMS+'?v='+RNG, cacheTime = 0).content)
 	except Exception:
 		Log("NHK :: Unable to load [VIDEOS] JSON file.")
 	else:
@@ -196,7 +198,7 @@ def load_JSON():
 
 	# LOAD RECENT SHOWS JSON
 	try:
-		dataC = JSON.ObjectFromString(HTTP.Request(RECENTLY, cacheTime = 0).content)
+		dataC = JSON.ObjectFromString(HTTP.Request(RECENTLY+'?v='+RNG, cacheTime = 0).content)
 	except Exception:
 		Log("NHK :: Unable to load [RECENT] JSON.")
 	else:
