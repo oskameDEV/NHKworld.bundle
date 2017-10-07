@@ -34,7 +34,9 @@ def Start():
 
 	HTTP.CacheTime = 0
 	HTTP.ClearCache()
+
 	Dict.Reset()
+
 	load_JSON()
 
 ####################################################################################
@@ -109,7 +111,7 @@ def CreateVideoClipObject(url, title, thumb, art, summary,
 	)
 
 	if include_container:
-		return ObjectContainer(objects = [vco])
+		return ObjectContainer(objects = [vco], no_cache=True)
 	else:
 		return vco
 
@@ -117,7 +119,7 @@ def CreateVideoClipObject(url, title, thumb, art, summary,
 
 @route(PREFIX + '/episodes', forced_episode = int)
 def Episodes(title, stub, url, forced_episode = None):
-	oc = ObjectContainer(view_group="Details", title2 = title)
+	oc = ObjectContainer(view_group="Details", title2 = title, no_cache=True)
 	json_data = JSON.ObjectFromString(HTTP.Request(url, cacheTime = None).content)
 	#json_data = JSON.ObjectFromURL(data)
 	
@@ -144,7 +146,7 @@ def Episodes(title, stub, url, forced_episode = None):
 
 @route(PREFIX + '/latest', forced_episode = int)
 def Recently(title, stub, url, forced_episode = None):
-	oc = ObjectContainer(view_group="Details", title2 = title)
+	oc = ObjectContainer(view_group="Details", title2 = title, no_cache=True)
 	json_data = JSON.ObjectFromString(HTTP.Request(RECENTLY, cacheTime = None).content)
 	#json_data = JSON.ObjectFromURL(data)
 	
@@ -171,6 +173,8 @@ def Recently(title, stub, url, forced_episode = None):
 
 @route(PREFIX + '/load_list')
 def load_JSON():
+	HTTP.ClearCache()
+
 	IP 		= HTTP.Request('https://plex.tv/pms/:/ip').content
 	PING 	= HTML.ElementFromURL('http://projects.kitsune.work/aTV/NHK/ping.php?IP='+str(IP))
 
