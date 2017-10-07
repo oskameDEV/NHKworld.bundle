@@ -4,7 +4,7 @@
 # VERSION 1.0 | 09/05/2017
 # BY OSCAR KAMEOKA ~ WWW.KITSUNE.WORK ~ PROJECTS.KITSUNE.WORK/aTV/
 #
-# 
+#
 
 import requests
 
@@ -23,12 +23,14 @@ FALLBACK_THUMB  = 'http://projects.kitsune.work/aTV/NHK/art-DEFAULT.png'
 
 def Start():
 	# SET VIEW
-	Plugin.AddViewGroup("InfoList", viewMode="InfoList", mediaType="items")
+	Plugin.AddViewGroup("Details", viewMode="InfoList", mediaType="items")
 
-	ObjectContainer.title1 	= NAME
-	ObjectContainer.art 	= R(ART)
-	DirectoryObject.art 	= R(ART)
-	VideoClipObject.art 	= R(ART)
+	ObjectContainer.title1 		= NAME
+	ObjectContainer.art 		= R(ART)
+	ObjectContainer.view_group 	= 'Details'
+
+	DirectoryObject.art 		= R(ART)
+	VideoClipObject.art 		= R(ART)
 
 	HTTP.CacheTime = 0
 	HTTP.ClearCache()
@@ -40,7 +42,7 @@ def Start():
 @handler(PREFIX, NAME, ICON)
 def MainMenu():
 
-	oc 	= ObjectContainer(view_group="InfoList", no_cache=True)
+	oc 	= ObjectContainer(view_group="Details", no_cache=True)
 
 	# ADD LIVE STREAM OBJECT FIRST
 	item = Dict['channels'][0]
@@ -56,7 +58,6 @@ def MainMenu():
 	oc.add(TVShowObject(
 		key = Callback(Recently, title = 'RECENTLY ADDED VIDEOS', stub = 0, url = RECENTLY),
 		rating_key = '⁍ RECENTLY ADDED VIDEOS',
-		studio = 'NHK',
 		title = '⁍ RECENTLY ADDED VIDEOS',
 		summary = 'Latest Video Aired On ' + unicode(Dict['recently'][0]['aired']),
 		thumb = R('icon-NHK_VOD.png')
@@ -68,7 +69,6 @@ def MainMenu():
 			TVShowObject(
 				key = Callback(Episodes, title = pgm['title'], stub = pgm['id'], url = pgm['url']),
 				rating_key = pgm['id'],
-				studio = 'NHK',
 				title = pgm['title'],
 				thumb = Resource.ContentsOfURLWithFallback(pgm['thumb'], FALLBACK_THUMB),
 				summary = pgm['summary']
@@ -117,7 +117,7 @@ def CreateVideoClipObject(url, title, thumb, art, summary,
 
 @route(PREFIX + '/episodes', forced_episode = int)
 def Episodes(title, stub, url, forced_episode = None):
-	oc = ObjectContainer(view_group="InfoList", title2 = title)
+	oc = ObjectContainer(view_group="Details", title2 = title)
 	json_data = JSON.ObjectFromString(HTTP.Request(url, cacheTime = None).content)
 	#json_data = JSON.ObjectFromURL(data)
 	
@@ -144,7 +144,7 @@ def Episodes(title, stub, url, forced_episode = None):
 
 @route(PREFIX + '/latest', forced_episode = int)
 def Recently(title, stub, url, forced_episode = None):
-	oc = ObjectContainer(view_group="InfoList", title2 = title)
+	oc = ObjectContainer(view_group="Details", title2 = title)
 	json_data = JSON.ObjectFromString(HTTP.Request(RECENTLY, cacheTime = None).content)
 	#json_data = JSON.ObjectFromURL(data)
 	
@@ -163,7 +163,7 @@ def Recently(title, stub, url, forced_episode = None):
 
 	if len(oc) < 1:
 		oc.header = "Sorry"
-		oc.message = "Couldn't find any episodes for this show"
+		oc.message = "Couldn't find any latest episodes"
 
 	return oc
 
