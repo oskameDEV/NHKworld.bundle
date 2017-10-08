@@ -1,9 +1,9 @@
 #
-#
-# NHK VIDEO ON DEMAND CHANNEL FOR PLEX
-# VERSION 1.0 | 09/05/2017
-# BY OSCAR KAMEOKA ~ WWW.KITSUNE.WORK ~ PROJECTS.KITSUNE.WORK/aTV/
-#
+	#
+		# NHK VIDEO ON DEMAND CHANNEL FOR PLEX
+		# VERSION 1.0 | 09/05/2017
+		# BY OSCAR KAMEOKA ~ WWW.KITSUNE.WORK ~ PROJECTS.KITSUNE.WORK/aTV/
+	#
 #
 
 import requests
@@ -22,12 +22,8 @@ FALLBACK_THUMB  = 'http://projects.kitsune.work/aTV/NHK/art-DEFAULT.png'
 
 
 def Start():
-	# SET VIEW
-	Plugin.AddViewGroup("Details", viewMode="InfoList", mediaType="items")
-
 	ObjectContainer.title1 		= NAME
 	ObjectContainer.art 		= R(ART)
-	ObjectContainer.view_group 	= 'Details'
 
 	DirectoryObject.art 		= R(ART)
 	VideoClipObject.art 		= R(ART)
@@ -44,7 +40,7 @@ def Start():
 @handler(PREFIX, NAME, ICON)
 def MainMenu():
 
-	oc 	= ObjectContainer(view_group="Details", no_cache=True)
+	oc 	= ObjectContainer(no_cache=True) 
 
 	# ADD LIVE STREAM OBJECT FIRST
 	item = Dict['channels'][0]
@@ -119,7 +115,7 @@ def CreateVideoClipObject(url, title, thumb, art, summary,
 
 @route(PREFIX + '/episodes', forced_episode = int)
 def Episodes(title, stub, url, forced_episode = None):
-	oc = ObjectContainer(view_group="Details", title2 = title, no_cache=True)
+	oc = ObjectContainer(title2 = title, no_cache=True)
 	json_data = JSON.ObjectFromString(HTTP.Request(url, cacheTime = None).content)
 	#json_data = JSON.ObjectFromURL(data)
 	
@@ -148,7 +144,7 @@ def Episodes(title, stub, url, forced_episode = None):
 def Recently(title, stub, url, forced_episode = None):
 	HTTP.ClearCache()
 
-	oc = ObjectContainer(view_group="Details", title2 = title, no_cache=True)
+	oc = ObjectContainer(title2 = title, no_cache=True)
 	json_data = JSON.ObjectFromString(HTTP.Request(RECENTLY, cacheTime = None).content)
 	#json_data = JSON.ObjectFromURL(data)
 	
@@ -182,31 +178,31 @@ def load_JSON():
 
 	# LOAD CHANNELS JSON
 	try:
-		dataA = JSON.ObjectFromString(HTTP.Request(CHANNELS+'?v='+RNG, cacheTime = 0).content)
+		dataLIVE = JSON.ObjectFromString(HTTP.Request(CHANNELS+'?v='+RNG, cacheTime = 1).content)
 	except Exception:
 		Log("NHK :: Unable to load [LIVE STREAM] JSON.")
 	else:
-		Dict['channels'] = dataA
+		Dict['channels'] = dataLIVE
 
 	# LOAD EPISODES JSON
 	try:
-		dataB = JSON.ObjectFromString(HTTP.Request(PROGRAMS+'?v='+RNG, cacheTime = 0).content)
+		dataPrograms = JSON.ObjectFromString(HTTP.Request(PROGRAMS+'?v='+RNG, cacheTime = 1).content)
 	except Exception:
 		Log("NHK :: Unable to load [VIDEOS] JSON file.")
 	else:
-		Dict['programs'] = dataB
+		Dict['programs'] = dataPrograms
 
 	# LOAD RECENT SHOWS JSON
 	try:
-		dataC = JSON.ObjectFromString(HTTP.Request(RECENTLY+'?v='+RNG, cacheTime = 0).content)
+		dataRecently = JSON.ObjectFromString(HTTP.Request(RECENTLY+'?v='+RNG, cacheTime = 1).content)
 	except Exception:
 		Log("NHK :: Unable to load [RECENT] JSON.")
 	else:
-		Dict['recently'] = dataC
+		Dict['recently'] = dataRecently
 	return MainMenu()
 
 ####################################################################################
 
-@route(PREFIX + '/live')
-def openLive(url):
-	return Redirect(url)
+# @route(PREFIX + '/live')
+# def openLive(url):
+# 	return Redirect(url)
