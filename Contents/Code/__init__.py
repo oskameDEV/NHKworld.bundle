@@ -6,12 +6,14 @@
 	#
 #
 
+import time
 import requests
+import urllib
 
 
 NAME 			= 'NHK WORLD'
 PREFIX 			= '/video/nhk_world'
-CHANNELS 		= 'http://projects.kitsune.work/aTV/NHK/videos/NHK_LIVESTREAM.json'
+CHANNELS 		= 'http://projects.kitsune.work/aTV/NHK/schedule.php'
 PROGRAMS 		= 'http://projects.kitsune.work/aTV/NHK/videos/directory.json'
 RECENTLY 		= 'http://projects.kitsune.work/aTV/NHK/videos/recently.json'
 JSON_URL 		= 'http://projects.kitsune.work/aTV/NHK/videos/'
@@ -28,7 +30,7 @@ def Start():
 	DirectoryObject.art 		= R(ART)
 	VideoClipObject.art 		= R(ART)
 
-	HTTP.CacheTime = 0
+	HTTP.CacheTime = 1
 	HTTP.ClearCache()
 
 	Dict.Reset()
@@ -171,14 +173,18 @@ def Recently(title, stub, url, forced_episode = None):
 
 @route(PREFIX + '/load_list')
 def load_JSON():
+	HTTP.CacheTime = 1
 	HTTP.ClearCache()
 
+	# GENERATE RANDOM HEX TO ENSURE JSON IS FRESH
 	ID 		= HTTP.Request('https://plex.tv/pms/:/ip').content
 	RNG 	= HTTP.Request('http://projects.kitsune.work/aTV/NHK/ping.php?IP='+str(ID)).content
 
 	# LOAD CHANNELS JSON
+	is_dst 		= time.daylight and time.localtime().tm_isdst > 0
+	utc_offset 	= - (time.altzone if is_dst else time.timezone)
 	try:
-		dataLIVE = JSON.ObjectFromString(HTTP.Request(CHANNELS+'?v='+RNG, cacheTime = 1).content)
+		dataLIVE = JSON.ObjectFromString(HTTP.Request(CHANNELS+'?tz='+str(utc_offset)+'&v='+RNG, cacheTime = 1).content)
 	except Exception:
 		Log("NHK :: Unable to load [LIVE STREAM] JSON.")
 	else:
