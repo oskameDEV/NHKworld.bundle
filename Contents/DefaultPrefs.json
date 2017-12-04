@@ -1,0 +1,8 @@
+[
+	{
+		"id": "force_HD",
+		"type": "bool",
+		"label": "Force LIVE stream to use higher quality",
+		"default": "true"
+	}
+]

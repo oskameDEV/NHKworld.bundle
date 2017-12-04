@@ -4,7 +4,10 @@ Watch NHK World 24 hour live stream, or watch any of the
 full episodes of NHK programs after they have been aired.  
   
 **Installation Instructions**  
-As soon as it's been accepted by the Plex staff.
+Simply install it from the official Plex Channel Directory  
+Side menu → [CHANNELS] → [INSTALL CHANNELS] → [CATEGORIES] → [NEWS]  
+And find 'NHKworld' there, tap the channel icon and choose [INSTALL]  
+Installing it this way ensures you get updates installed automatically  
 
 **Manual Installation Instructions**  
 If for whatever reason you want to install this channel manually  

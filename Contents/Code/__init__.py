@@ -1,7 +1,7 @@
 #
 	#
-		# NHK VIDEO ON DEMAND CHANNEL FOR PLEX
-		# VERSION 1.0 | 09/05/2017
+		# NHK LIVE & VIDEO ON DEMAND CHANNEL FOR PLEX
+		# VERSION 1.1 | 04/12/2017
 		# BY OSCAR KAMEOKA ~ WWW.KITSUNE.WORK ~ PROJECTS.KITSUNE.WORK/aTV/
 	#
 #
@@ -9,6 +9,7 @@
 import time
 import requests
 import urllib
+import re
 
 
 NAME 			= 'NHK WORLD'
@@ -42,12 +43,21 @@ def Start():
 @handler(PREFIX, NAME, ICON)
 def MainMenu():
 
-	oc 	= ObjectContainer(no_cache=True) 
+	oc 	= ObjectContainer()
+
+	# USER PREFS
+	force_HD 	= Prefs['force_HD']
 
 	# ADD LIVE STREAM OBJECT FIRST
 	item = Dict['channels'][0]
+	# SET URL
+	# IF USER WANTS HD
+	liveURL = item['url']
+	if force_HD:
+		liveURL = 'https://b-nhkwtvglobal-i.akamaihd.net/hls/live/'+re.findall(r"\D(\d{6})\D", liveURL)[0]+'-b/nhkwtvglobal/index_2100.m3u8'
+
 	oc.add(CreateVideoClipObject(
-		url = item['url'],
+		url = liveURL,
 		title = '⁍ WATCH LIVE NOW',
 		thumb = R('icon-NHK.png'),
 		art = R('art-NHK.jpg'),
@@ -72,7 +82,7 @@ def MainMenu():
 				title = pgm['title'],
 				thumb = Resource.ContentsOfURLWithFallback(pgm['thumb'], FALLBACK_THUMB),
 				summary = pgm['summary']
-			) 
+			)
 		)
 
 	return oc
@@ -109,7 +119,7 @@ def CreateVideoClipObject(url, title, thumb, art, summary,
 	)
 
 	if include_container:
-		return ObjectContainer(objects = [vco], no_cache=True)
+		return ObjectContainer(objects = [vco])
 	else:
 		return vco
 
@@ -117,13 +127,13 @@ def CreateVideoClipObject(url, title, thumb, art, summary,
 
 @route(PREFIX + '/episodes', forced_episode = int)
 def Episodes(title, stub, url, forced_episode = None):
-	oc = ObjectContainer(title2 = title, no_cache=True)
-	json_data = JSON.ObjectFromString(HTTP.Request(url, cacheTime = None).content)
+	oc = ObjectContainer(title2 = title)
+	json_data = JSON.ObjectFromString(HTTP.Request(url, cacheTime = 1).content)
 	#json_data = JSON.ObjectFromURL(data)
-	
+
 	for episode in json_data:
 		duration = int(episode['duration']) * 1000
-				
+
 		oc.add(
 			CreateVideoClipObject(
 				title = episode['subTitle'],
@@ -146,13 +156,13 @@ def Episodes(title, stub, url, forced_episode = None):
 def Recently(title, stub, url, forced_episode = None):
 	HTTP.ClearCache()
 
-	oc = ObjectContainer(title2 = title, no_cache=True)
-	json_data = JSON.ObjectFromString(HTTP.Request(RECENTLY, cacheTime = None).content)
+	oc = ObjectContainer(title2 = title)
+	json_data = JSON.ObjectFromString(HTTP.Request(RECENTLY, cacheTime = 1).content)
 	#json_data = JSON.ObjectFromURL(data)
-	
+
 	for episode in json_data:
 		duration = int(episode['duration']) * 1000
-				
+
 		oc.add(
 			CreateVideoClipObject(
 				title = episode['title'] + ' - ' + episode['subTitle'],
