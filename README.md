@@ -2,15 +2,13 @@
 Plex Media Server channel for NHK World.  
 Watch NHK World 24 hour live stream, or watch any of the  
 full episodes of NHK programs after they have been aired.  
-  
+
 **Installation Instructions**  
-Simply install it from the official Plex Channel Directory  
-Side menu → [CHANNELS] → [INSTALL CHANNELS] → [CATEGORIES] → [NEWS]  
-And find 'NHKworld' there, tap the channel icon and choose [INSTALL]  
-Installing it this way ensures you get updates installed automatically  
+Install through the Unsuppored App Store (requires you to install the Webtools.bundle)  
+→ https://github.com/ukdtom/WebTools.bundle  
+Basically instal like the instructions below, then open the webpanel of Webtools and install 'NHK World'
 
 **Manual Installation Instructions**  
-If for whatever reason you want to install this channel manually  
  /!\ Installing it this way does not come with the auto-update option /!\  
 
 Download the latest version (green button on this page) and after unzipping, make sure the folder name is called "NHKworld.bundle" (remove the -master part)  
