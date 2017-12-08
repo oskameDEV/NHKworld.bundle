@@ -6,7 +6,7 @@ full episodes of NHK programs after they have been aired.
 **Installation Instructions**  
 Install through the Unsuppored App Store (requires you to install the Webtools.bundle)  
 → https://github.com/ukdtom/WebTools.bundle  
-Basically instal like the instructions below, then open the webpanel of Webtools and install 'NHK World'
+Basically install it like the instructions below, then open the webpanel of Webtools and install 'NHK World'
 
 **Manual Installation Instructions**  
  /!\ Installing it this way does not come with the auto-update option /!\  
