@@ -1,7 +1,7 @@
 #
 	#
 		# NHK LIVE & VIDEO ON DEMAND CHANNEL FOR PLEX
-		# VERSION 1.1 | 04/12/2017
+		# VERSION 1.2 | 04/30/2019
 		# BY OSCAR KAMEOKA ~ WWW.KITSUNE.WORK ~ PROJECTS.KITSUNE.WORK/aTV/
 	#
 #
@@ -53,8 +53,9 @@ def MainMenu():
 	# SET URL
 	# IF USER WANTS HD
 	liveURL = item['url']
-	if force_HD:
-		liveURL = 'https://b-nhkwtvglobal-i.akamaihd.net/hls/live/'+re.findall(r"\D(\d{6})\D", liveURL)[0]+'-b/nhkwtvglobal/index_2100.m3u8'
+	# v1.2 :: TEMPORARILY TURNED OFF, MAIN STREAM = HD TOO
+	#if force_HD:
+	#	liveURL = 'https://b-nhkwtvglobal-i.akamaihd.net/hls/live/'+re.findall(r"\D(\d{6})\D", liveURL)[0]+'-b/nhkwtvglobal/index_2100.m3u8'
 
 	oc.add(CreateVideoClipObject(
 		url = liveURL,
